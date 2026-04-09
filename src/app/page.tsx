@@ -45,7 +45,7 @@ export default function Home() {
           <div className="flex shrink-0 flex-col gap-8 lg:w-1/3">
             <Tuner />
             <PlayingNoteCard />
-            <AdsPlaceholder />
+            <AdsPlaceholder adSlot="4048945896" />
           </div>
 
           {/* Right Column: Training Area */}
