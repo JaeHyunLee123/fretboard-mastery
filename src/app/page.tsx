@@ -29,10 +29,7 @@ export default function Home() {
               >
                 Guitar
               </Toggle>
-              <Toggle
-                pressed={instrument === "bass"}
-                onPressedChange={() => setInstrument("bass")}
-              >
+              <Toggle pressed={instrument === "bass"} onPressedChange={() => setInstrument("bass")}>
                 Bass
               </Toggle>
             </div>
@@ -45,13 +42,16 @@ export default function Home() {
           <div className="flex shrink-0 flex-col gap-8 lg:w-1/3">
             <Tuner />
             <PlayingNoteCard />
-            <AdsPlaceholder adSlot="4048945896" />
           </div>
 
           {/* Right Column: Training Area */}
           <div className="flex h-full flex-1 flex-col">
             <TrainingArea />
           </div>
+        </div>
+
+        <div>
+          <AdsPlaceholder adSlot="4048945896" />
         </div>
       </main>
     </AudioProvider>
