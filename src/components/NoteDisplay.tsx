@@ -48,7 +48,10 @@ export function NoteDisplay({ displayModes, status = "idle" }: NoteDisplayProps)
     const showStaff = displayModes.includes("staff");
     const showTab = displayModes.includes("tab");
 
-    const key = `${targetNote.noteName.toLowerCase()}/${targetNote.octave}`;
+    // Bass guitar is an octave-transposing instrument.
+    // We write it one octave higher than it sounds (e.g., E1 sounding is written as E2).
+    const displayOctave = instrument === "bass" ? targetNote.octave + 1 : targetNote.octave;
+    const key = `${targetNote.noteName.toLowerCase()}/${displayOctave}`;
     const clef = instrument === "bass" ? "bass" : "treble";
 
     let staffStave: Stave | null = null;
@@ -63,8 +66,8 @@ export function NoteDisplay({ displayModes, status = "idle" }: NoteDisplayProps)
     }
 
     if (showTab) {
-      const tabOptions = instrument === "bass" ? { num_lines: 4 } : { num_lines: 6 };
-      tabStave = new TabStave(10, yOffset, width - 20, tabOptions as any);
+      const numLines = instrument === "bass" ? 4 : 6;
+      tabStave = new TabStave(10, yOffset, width - 20, { numLines });
       tabStave.addClef("tab").setContext(context);
       tabStave.draw();
     }

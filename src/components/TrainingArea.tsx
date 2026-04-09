@@ -130,14 +130,6 @@ export function TrainingArea() {
         )}
       </div>
 
-      {/* Visual Feedback Overlay */}
-      {successAnim && (
-        <div className="bg-primary/5 animate-in fade-in pointer-events-none absolute inset-0 z-0 flex items-center justify-center duration-300">
-          <div className="text-primary font-display animate-in slide-in-from-bottom-4 text-4xl font-bold tracking-widest drop-shadow-md">
-            CORRECT!
-          </div>
-        </div>
-      )}
 
     </Card>
   );
