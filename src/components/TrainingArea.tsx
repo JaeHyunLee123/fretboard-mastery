@@ -11,32 +11,64 @@ type DisplayMode = "alphabet" | "tab" | "staff";
 
 export function TrainingArea() {
   const [displayModes, setDisplayModes] = useState<DisplayMode[]>(["alphabet"]);
-  const { targetNote, status, setStatus, generateNextNote, currentPitchNote, currentPitchOctave } =
-    usePracticeStore();
+  const {
+    targetNote,
+    status,
+    setStatus,
+    generateNextNote,
+    currentPitchNote,
+    currentPitchOctave,
+    setIsIncorrect,
+  } = usePracticeStore();
   const [successAnim, setSuccessAnim] = useState(false);
+  const [errorAnim, setErrorAnim] = useState(false);
 
+  // 1. Match Detection Effect
   useEffect(() => {
     if (status !== "listening" || !targetNote) return;
 
-    // Exact match for both Note and Octave since strings dictate exact octaves
+    // Correct match
     if (currentPitchNote === targetNote.noteName && currentPitchOctave === targetNote.octave) {
       setStatus("success");
       setSuccessAnim(true);
+      setErrorAnim(false);
+      setIsIncorrect(false);
+      return;
+    }
 
+    // Incorrect note (only trigger if there's an actual detected note)
+    if (
+      currentPitchNote &&
+      (currentPitchNote !== targetNote.noteName || currentPitchOctave !== targetNote.octave)
+    ) {
+      setErrorAnim(true);
+      setIsIncorrect(true);
       const timer = setTimeout(() => {
-        setSuccessAnim(false);
-        generateNextNote();
-      }, 1200);
-
+        setErrorAnim(false);
+        setIsIncorrect(false);
+      }, 500);
       return () => clearTimeout(timer);
     }
-  }, [currentPitchNote, currentPitchOctave, targetNote, status, setStatus, generateNextNote]);
+  }, [currentPitchNote, currentPitchOctave, targetNote, status, setStatus, setIsIncorrect]);
+
+  // 2. Success Transition Effect (Handles automatic progression)
+  useEffect(() => {
+    if (status !== "success") return;
+
+    const timer = setTimeout(() => {
+      setSuccessAnim(false);
+      generateNextNote(); // This sets status back to "listening"
+    }, 1000); // 1.0s for a snappier rhythm
+
+    return () => clearTimeout(timer);
+  }, [status, generateNextNote]);
 
   return (
     <Card
       className={cn(
-        "relative flex h-full flex-col overflow-hidden transition-colors duration-500",
-        successAnim ? "bg-primary/10 border-primary/50 shadow-[0_0_32px_rgba(74,222,128,0.2)]" : ""
+        "relative flex h-full flex-col overflow-hidden transition-all duration-500",
+        successAnim ? "bg-primary/20 border-primary/50 shadow-[0_0_32px_rgba(74,222,128,0.3)]" : "",
+        errorAnim ? "bg-error/10 border-error/50 shadow-[0_0_32px_rgba(244,67,54,0.2)]" : ""
       )}
     >
       <div className="border-outline-variant/30 relative z-20 flex items-center justify-between border-b p-6">
@@ -91,7 +123,10 @@ export function TrainingArea() {
             </button>
           </div>
         ) : (
-          <NoteDisplay displayModes={displayModes} />
+          <NoteDisplay
+            displayModes={displayModes}
+            status={successAnim ? "success" : errorAnim ? "error" : "idle"}
+          />
         )}
       </div>
 
@@ -103,6 +138,7 @@ export function TrainingArea() {
           </div>
         </div>
       )}
+
     </Card>
   );
 }

@@ -24,11 +24,11 @@ const TUNING = {
     2 * 12 + 4, // E2 (28)
   ],
   bass: [
-    // 1st to 4th string
-    2 * 12 + 7, // G2 (31)
-    2 * 12 + 2, // D2 (26)
-    1 * 12 + 9, // A1 (21)
-    1 * 12 + 4, // E1 (16)
+    // 1st to 4th string (Target range E1 to G3)
+    2 * 12 + 7, // G2 (31) -> 12th fret: G3 (43)
+    2 * 12 + 2, // D2 (26) -> 12th fret: D3 (38)
+    1 * 12 + 9, // A1 (21) -> 12th fret: A2 (33)
+    1 * 12 + 4, // E1 (16) -> 12th fret: E2 (28)
   ],
 };
 
@@ -41,6 +41,9 @@ interface PracticeState {
 
   status: "idle" | "listening" | "success";
   setStatus: (status: "idle" | "listening" | "success") => void;
+ 
+  isIncorrect: boolean;
+  setIsIncorrect: (isIncorrect: boolean) => void;
 
   currentPitchHz: number | null;
   currentPitchNote: string | null;
@@ -92,6 +95,9 @@ export const usePracticeStore = create<PracticeState>((set, get) => ({
 
   status: "idle",
   setStatus: (status) => set({ status }),
+ 
+  isIncorrect: false,
+  setIsIncorrect: (isIncorrect) => set({ isIncorrect }),
 
   currentPitchHz: null,
   currentPitchNote: null,

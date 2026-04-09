@@ -18,9 +18,10 @@ type DisplayMode = "alphabet" | "tab" | "staff";
 
 interface NoteDisplayProps {
   displayModes: DisplayMode[];
+  status?: "success" | "error" | "idle";
 }
 
-export function NoteDisplay({ displayModes }: NoteDisplayProps) {
+export function NoteDisplay({ displayModes, status = "idle" }: NoteDisplayProps) {
   const { targetNote, instrument } = usePracticeStore();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -96,14 +97,18 @@ export function NoteDisplay({ displayModes }: NoteDisplayProps) {
       tabVoice.draw(context, tabStave);
     }
 
-    // Light theme override for Dark Mode App (Optional: Make VexFlow lines and notes match "on-surface")
-    // Note: Vexflow SVG is embedded, we can apply css filters or set strokes
+    // Light theme override for Dark Mode App
     const svg = containerRef.current.querySelector("svg");
     if (svg) {
-      // Simple invert filter or set context styles
-      svg.style.filter = "invert(1) hue-rotate(180deg)";
+      if (status === "success") {
+        svg.style.filter = "invert(1) sepia(1) saturate(5) hue-rotate(90deg)"; // Green highlight
+      } else if (status === "error") {
+        svg.style.filter = "invert(1) sepia(1) saturate(5) hue-rotate(-30deg)"; // Red highlight
+      } else {
+        svg.style.filter = "invert(1) hue-rotate(180deg)";
+      }
     }
-  }, [targetNote, displayModes, instrument]);
+  }, [targetNote, displayModes, instrument, status]);
 
   const showAlphabet = displayModes.includes("alphabet");
 
@@ -118,7 +123,12 @@ export function NoteDisplay({ displayModes }: NoteDisplayProps) {
   return (
     <div className="flex min-h-[300px] w-full flex-col items-center justify-center">
       {showAlphabet && (
-        <div className="font-display text-primary animate-in fade-in zoom-in-95 mb-4 text-[8rem] leading-none font-bold duration-300">
+        <div
+          className={cn(
+            "font-display animate-in fade-in zoom-in-95 mb-4 text-[8rem] leading-none font-bold transition-colors duration-300",
+            status === "success" ? "text-primary" : status === "error" ? "text-error" : "text-primary"
+          )}
+        >
           {targetNote.noteName}
           <span className="text-on-surface-variant ml-2 text-4xl font-medium">
             {targetNote.octave}

@@ -33,7 +33,7 @@ Stitch MCP에 정의된 `Fretboard Trainer Web App` 디자인 테마("The Digita
 ## 4. 기술 스택 (Tech Stack)
 
 - **Frontend**: Next.js (App Router), React, TypeScript, Tailwind CSS (Stitch 디자인 토큰 적용)
-- **Audio**: Web Audio API, `pitchfinder` (피치 감지)
+- **Audio**: Web Audio API, `pitchy` (피치 감지)
 - **Score Rendering**: `vexflow` (오선보 및 타브 악보 렌더링)
 - **Hosting**: Vercel (정적 웹 호스팅)
 - **(Backend/DB 제외)**: 초기 버전에서는 사용자 인증 및 DB 저장을 제외하고 브라우저 상태(상태 관리 도구 활용)만 사용합니다.
@@ -47,19 +47,19 @@ Stitch MCP에 정의된 `Fretboard Trainer Web App` 디자인 테마("The Digita
 
 ### Phase 2: 핵심 오디오 & 악보 모듈 구현
 
-- [ ] 마이크 권한 요청 및 Web Audio API를 활용한 피치 인식(`pitchfinder`) 연동
-- [ ] `vexflow`를 사용한 오선보 및 타브 악보 렌더링 컴포넌트 개발
-- [ ] 기타/베이스 전환에 따른 음표 범위 및 기준 주파수 설정 로직
+- [x] 마이크 권한 요청 및 Web Audio API를 활용한 피치 인식(`pitchy`) 연동
+- [x] `vexflow`를 사용한 오선보 및 타브 악보 렌더링 컴포넌트 개발
+- [x] 기타/베이스 전환에 따른 음표 범위 및 기준 주파수 설정 로직 (베이스: E1~G3)
 
 ### Phase 3: 기능 통합 및 연습 로직 완성 (단일 노트 연습)
 
-- [ ] 사용자의 피치 입력을 튜너 UI에 실시간 바인딩
-- [ ] 무작위 음 제시 로직 및 사용자의 입력이 일치하는지 확인하는 판별 로직 추가
-- [ ] 음정 알파벳, 오선보, 타브 악보 표시를 각각 On/Off 할 수 있는 토글 환경 설정 추가
-- [ ] 정답/오답에 따른 화면 시각적 피드백 구축
+- [x] 사용자의 피치 입력을 튜너 UI에 실시간 바인딩
+- [x] 무작위 음 제시 로직 및 사용자의 입력이 일치하는지 확인하는 판별 로직 추가
+- [x] 음정 알파벳, 오선보, 타브 악보 표시를 각각 On/Off 할 수 있는 토글 환경 설정 추가
+- [x] 정답/오답에 따른 화면 시각적 피드백 구축 (정답: 초록색/CORRECT!, 오답: 빨간색/실시간 음 노출)
 
 ### Phase 4: 최적화 및 광고 연동
 
 - [ ] Google AdSense 컴포넌트 연동 (지정된 위치에 노출)
-- [ ] 클라이언트 오디오 메모리 누수 방지 및 최적화
+- [x] 클라이언트 오디오 메모리 누수 방지 및 최적화 (RequestAnimationFrame / AudioContext 종료 처리)
 - [ ] Vercel 배포

@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Tuner } from "@/components/Tuner";
 import { TrainingArea } from "@/components/TrainingArea";
 import { AdsPlaceholder } from "@/components/AdsPlaceholder";
 import { Toggle } from "@/components/commons/Toggle";
 import { AudioProvider } from "@/hooks/useAudio";
 import { DeviceConnector } from "@/components/DeviceConnector";
-
-type Instrument = "guitar" | "bass";
+import { usePracticeStore } from "@/store/usePracticeStore";
+import { PlayingNoteCard } from "@/components/PlayingNoteCard";
 
 export default function Home() {
-  const [instrument, setInstrument] = useState<Instrument>("guitar");
+  const { instrument, setInstrument } = usePracticeStore();
 
   return (
     <AudioProvider>
@@ -24,14 +23,14 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <DeviceConnector />
             <div className="bg-surface-container-highest inline-flex rounded-full p-1">
-              <Toggle 
-                pressed={instrument === "guitar"} 
+              <Toggle
+                pressed={instrument === "guitar"}
                 onPressedChange={() => setInstrument("guitar")}
               >
                 Guitar
               </Toggle>
-              <Toggle 
-                pressed={instrument === "bass"} 
+              <Toggle
+                pressed={instrument === "bass"}
                 onPressedChange={() => setInstrument("bass")}
               >
                 Bass
@@ -45,7 +44,7 @@ export default function Home() {
           {/* Left Column: Tuner & Ads */}
           <div className="flex shrink-0 flex-col gap-8 lg:w-1/3">
             <Tuner />
-            <div className="hidden flex-1 lg:block" />
+            <PlayingNoteCard />
             <AdsPlaceholder />
           </div>
 
