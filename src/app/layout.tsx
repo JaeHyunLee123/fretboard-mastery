@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -32,7 +33,10 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${inter.variable} ${spaceGrotesk.variable} dark h-full antialiased`}
     >
-      <body className="font-body flex min-h-full flex-col">{children}</body>
+      <body className="font-body flex min-h-full flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
