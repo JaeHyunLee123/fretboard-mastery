@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -36,6 +37,12 @@ export default function RootLayout({
       <body className="font-body flex min-h-full flex-col">
         {children}
         <Analytics />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7288756726708711"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
